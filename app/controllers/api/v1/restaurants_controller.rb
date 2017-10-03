@@ -17,10 +17,10 @@ class Api::V1::RestaurantsController < ApiController
 		if @restaurant.present?
 			items = @restaurant.menus.paginate(:page => params[:page], :per_page => PER_PAGE)
 			if items.present?
-				items_json = []
+				items_json = Array.new
 				items.each do |item|
 					items_data = {}
-					items_data["tags"] = []
+					items_data["tags"] = Array.new
 					items_data[:id] =  item.id
 					items_data[:name] =  item.name
 					items_data[:category] = item.category.name
