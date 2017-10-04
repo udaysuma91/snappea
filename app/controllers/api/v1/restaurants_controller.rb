@@ -19,7 +19,7 @@ class Api::V1::RestaurantsController < ApiController
 			if items.present?
 				render json: @restaurant, include:  ['menus','menu_tags'], status: 200 
 			else
-				render json: {status: false, message: "Items Not Found"}, status: 422 and return
+				render json: {status: false, message: "Menu Items Not Found"}, status: 422 and return
 			end
 		else
 			render json: {status: false, message: "Restaurant Not Found"}, status: 422 and return
