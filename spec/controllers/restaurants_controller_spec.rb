@@ -1,54 +1,41 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::RestaurantsController, type: :controller do
-  let(:restaurant) {FactoryGirl.create(:restaurant)}
+  before(:each) do
+    @user = FactoryGirl.create(:user)
+    @restaurants = FactoryGirl.create(:restaurant)
+  end
   let(:category) {Category.create(name: 'Side')}
-	let(:menu) { Menu.create(:name => 'item 4', :category_id => category.id,:restaurant_id => restaurant.id,:description =>"test item4") }
+	let(:menu) { Menu.create(:name => 'item 4', :category_id => category.id,:restaurant_id => @restaurants.id,:description =>"test item4") }
   
   ######### get list of restaurants ################
+
   describe 'GET /api/v1/restaurants' do
-	 let(:params) { {api: '49d0b9e8-d9b1-46d6-b784-cd0258ffdc5c'} }	
-	it 'check api key' do
-      get :index, format: :json
-      if restaurant.present? && params[:api].present?
-      	p restaurant			
-      else
-      	p "Restaurants not found"
-      end
-    end    
+  	 it 'check api key present' do
+        get :index, format: :json
+        expect(response.status).to eq 400
+      end    
+  end
+  describe 'GET /api/v1/restaurants.json?api=49d0b9e8-d9b1-46d6-b784-cd0258ffdc5c' do
+     let(:params) { { disabled: 'false' } }
+     it 'list of restaurants' do
+        get :index, format: :json, :params => {api: '49d0b9e8-d9b1-46d6-b784-cd0258ffdc5c'}
+        expect(response.status).to eq 200
+      end    
+  end
+  ####### for geting list of restaurant menus ###########
+  describe 'GET /api/v1/restaurants/1/menus' do
+       it 'check api key present' do
+          get :index, format: :json
+          expect(response.status).to eq 400
+        end    
   end
 
-describe 'GET /api/v1/restaurants' do
-	 let(:params) { {api: ''} }	
-	it 'check valid api key' do
-      get :index, format: :json
-      if params[:api].blank?
-      	p "please provide api key"			
-      end
+  describe 'GET /api/v1/restaurants/1/menus.json?api=49d0b9e8-d9b1-46d6-b784-cd0258ffdc5c' do
+  	let(:params) { { disabled: 'false' } }
+    it 'list of restaurant menu items' do
+      get :index, format: :json, :params => {api: '49d0b9e8-d9b1-46d6-b784-cd0258ffdc5c'}
+      expect(response.status).to eq 200
     end    
   end
-
-####### for geting list of restaurant menus ###########
-describe 'GET /api/v1/restaurants/1/menus' do
-	 let(:params) { {api: '49d0b9e8-d9b1-46d6-b784-cd0258ffdc5c'} }	
-	it 'check api key' do
-      get :index, format: :json
-      if menu.present? && params[:api].present?
-      	p menu			
-      else
-      	p "restaurant menu items not found"
-      end
-    end    
-  end
- 
-describe 'GET /api/v1/restaurants/1/menus' do
-	 let(:params) { {api: ''} }	
-	it 'check valid api key' do
-      get :index, format: :json
-      if params[:api].blank?
-      	p "please provide api key"			
-      end
-    end    
-  end
-
 end

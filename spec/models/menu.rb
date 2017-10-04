@@ -1,7 +1,8 @@
 require 'rails_helper'
-
-RSpec.describe Restaurant, type: :model do
-subject { described_class.new(name: "test1",description: "desc", rating: 2.4, address: "address") }
+RSpec.describe Menu, type: :model do
+let(:category) {Category.create(name: 'Side')}
+let(:restaurant) {FactoryGirl.create(:restaurant)}
+subject { described_class.new(name: "test1",category_id: category.id, restaurant_id: restaurant.id) }
 
 	describe "Validations" do
 		it "is valid with all attributes" do
@@ -9,7 +10,7 @@ subject { described_class.new(name: "test1",description: "desc", rating: 2.4, ad
 		end
 	end
 	it "is not valid without attributes" do
-		expect(Restaurant.new).to_not be_valid
+		expect(Menu.new).to_not be_valid
 	end
 
 	it "is not valid without a name" do
@@ -18,13 +19,13 @@ subject { described_class.new(name: "test1",description: "desc", rating: 2.4, ad
 	end
 
 	it "is not valid without a description" do
-		subject.description = nil
+		subject.category_id = nil
 		expect(subject).to_not be_valid
 	end
 
 	it "is not valid without a rating" do
-		subject.rating = nil
+		subject.restaurant_id = nil
 		expect(subject).to_not be_valid
 	end
-	
+
 end	

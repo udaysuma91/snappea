@@ -7,7 +7,7 @@ class Api::V1::RestaurantsController < ApiController
 	def index
 		@restaurants = Restaurant.all
 		if @restaurants.present?
-			render json: {status: true, restaurants:@restaurants}, status: 200
+			render json: {restaurants:@restaurants}, status: 200
 		else
 			render json: {status: false, message: "Restaurants Not Found"}, status: 422 and return
 		end
@@ -17,20 +17,7 @@ class Api::V1::RestaurantsController < ApiController
 		if @restaurant.present?
 			items = @restaurant.menus.paginate(:page => params[:page], :per_page => PER_PAGE)
 			if items.present?
-				items_json = Array.new
-				items.each do |item|
-					items_data = {}
-					items_data["tags"] = Array.new
-					items_data[:id] =  item.id
-					items_data[:name] =  item.name
-					items_data[:category] = item.category.name
-					items_data[:description] = item.description
-					items_json << items_data
-					item.menu_tags.each do |tag|
-						items_data["tags"] << {name: tag.name}
-					end
-				end
-				render json: {status: true, menu_items: items_json}, status: 200
+				render json: @restaurant, include:  ['menus','menu_tags'], status: 200 
 			else
 				render json: {status: false, message: "Items Not Found"}, status: 422 and return
 			end

@@ -33,7 +33,9 @@ Menu.find_or_create_by(name: 'item 8', category_id: 4, restaurant_id: 3 ,descrip
 Menu.find_or_create_by(name: 'item 9', category_id: 5, restaurant_id: 4 ,description: 'test item 9')
 Menu.find_or_create_by(name: 'item 10', category_id: 5, restaurant_id: 4 ,description: 'test item 10')
 
-User.find_or_create_by(name: 'test client',guid: "49d0b9e8-d9b1-46d6-b784-cd0258ffdc5c")
+User.find_or_create_by(name: 'test client',email:"test@gmail.com",password: "password",guid: "49d0b9e8-d9b1-46d6-b784-cd0258ffdc5c")
+User.find_or_create_by(name: 'test client1',email:"test1@gmail.com",password: "password",guid: "05a64bac-b11b-4542-b50f-e9cf735c1c96")
+
 
 Restaurant.find_or_create_by(name: 'Restaurant 1', rating: 4.2, address: 'abc path', description: 'test 1')
 Restaurant.find_or_create_by(name: 'Restaurant 2', rating: 4.5, address: 'pqr path', description: 'test 2')
